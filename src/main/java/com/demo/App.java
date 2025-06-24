@@ -1,15 +1,9 @@
 package com.demo;
-
-//import javax.sound.sampled.AudioFormat;
-//import javax.sound.sampled.AudioSystem;
-//import javax.sound.sampled.DataLine;
-//import javax.sound.sampled.TargetDataLine;
 import org.vosk.LibVosk;
 import org.vosk.LogLevel;
 import org.vosk.Model;
 import org.vosk.Recognizer;
 import org.json.JSONObject;
-
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URI;
@@ -19,14 +13,9 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 public class App {
     public static void main(String[] args) throws IOException, LineUnavailableException, InterruptedException {
-
         LogLevel level = LogLevel.INFO;
         LibVosk.setLogLevel(level);
-
-        // Путь к распакованной модели (скачай и распакуй vosk-model-small-cs-0.4-rhasspy)
         Model model = new Model("models/vosk-model-small-cs-0.4-rhasspy");
-
-        // Настройка аудиоформата (16000 Гц, 16 бит, моно)
         AudioFormat format = new AudioFormat(16000, 16, 1, true, false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
@@ -34,13 +23,10 @@ public class App {
             System.out.println("Line not supported");
             System.exit(1);
         }
-
         TargetDataLine microphone = (TargetDataLine) AudioSystem.getLine(info);
         microphone.open(format);
         microphone.start();
-
         System.out.println("🎤 Mluvte česky (řekněte 'konec' pro ukončení)...");
-
         byte[] buffer = new byte[4096];
         String answer = "";
         Recognizer recognizer = new Recognizer(model, 16000.0f);
@@ -51,7 +37,7 @@ public class App {
             if (recognizer.acceptWaveForm(buffer, bytesRead)) {
                 String resultJson = recognizer.getResult();
                 String text = resultJson.replaceAll(".*\"text\":\"(.*?)\".*", "$1").trim();
-
+                
                 if (!text.isEmpty()) {
                     System.out.println("Rozpoznáno: " + text);
 
@@ -59,13 +45,10 @@ public class App {
                         System.out.println( "Ukončuji...");
                         break;
                     }
-
-                    // Poslat dotaz do Ollama
                      String safePrompt = text
-                            .replace("\\", "\\\\")   // экранировать \
-                            .replace("\"", "\\\"")   // экранировать "
-                            .replace("\n", "\\n");   // экранировать переход строки
-
+                            .replace("\\", "\\\\")   
+                            .replace("\"", "\\\"")   
+                            .replace("\n", "\\n");   
                     String ollamaPayload = """
                             {
                                 "model": "llama3.2:1b",
@@ -82,10 +65,7 @@ public class App {
                             .build();
 
                     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
                     JSONObject json = new JSONObject(response.body());
-
-
                     if (json.has("message")) {
                         answer = json.getJSONObject("message").getString("content");
                         System.out.println("Odpověď: " + answer);
@@ -95,8 +75,6 @@ public class App {
                         System.err.println("Neočekávaný formát odpovědi: " + json.toString(2));
                     }
                     System.out.println("Odpověď: " + answer);
-
-                    // Přečíst odpověď nahlas pomocí espeak (nebo RHVoice)
                     try {
                         String speakCommand = String.format("espeak -v cs \"%s\"", answer);
                         String command = "\"C:\\Program Files (x86)\\eSpeak\\command_line\\espeak.exe\" -v cs \"" + answer + "\"";
