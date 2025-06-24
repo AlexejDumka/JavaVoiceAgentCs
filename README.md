@@ -1,6 +1,6 @@
 # Czech Voice Agent
 
-**CzechVoiceAgent** is an offline voice assistant written in Java that listens to your voice in Czech, sends recognized text to a local Ollama LLM model, receives a response, and speaks it back using espeak. The assistant cycles through angelic imagery and sunrise/sunset sky transitions for an immersive visual experience.
+**CzechVoiceAgent** is an offline voice assistant written in Java that listens to your question in Czech language, sends recognized text to a local Ollama LLM model, receives a response, and speaks it back using espeak.
 
 ## Features
 
@@ -31,6 +31,6 @@
 
 ### 1. Clone the repo
 
-```bash
+```
 git clone https://github.com/AlexejDumka/CzechVoiceAgent.git
 cd CzechVoiceAgent
