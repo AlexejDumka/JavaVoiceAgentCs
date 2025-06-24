@@ -6,7 +6,7 @@
 
 - Offline speech recognition using [Vosk](https://alphacephei.com/vosk/)
 - LLM-based response via [Ollama](https://ollama.com/) (e.g., LLaMA3)
-- Offline text-to-speech with `espeak`
+- Offline text-to-speech with [espeak] (https://netix.dl.sourceforge.net/project/espeak/espeak/espeak-1.48/setup_espeak-1.48.04.exe?viasf=1)
 - Czech language support end-to-end
 
 ##  Tech Stack
@@ -15,7 +15,7 @@
 |------------------|------------------------|
 | Speech-to-Text   | Vosk (Java binding)    |
 | LLM Backend      | Ollama + Local model   |
-| Text-to-Speech   | eSpeak      |
+| Text-to-Speech   | eSpeak                 |
 | JSON Processing  | org.json               |
 
 
@@ -24,8 +24,8 @@
 - Java 11+
 - Maven
 - Ollama installed and running (`ollama run llama3`)
-- `espeak` (installed and available in `PATH`)
-- Vosk model for Czech (e.g. `vosk-model-small-cs-0.4-rhasspy`)
+- `espeak` (installed and available in system `PATH`)
+- Vosk model for Czech (e.g. [vosk-model-small-cs-0.4-rhasspy](https://alphacephei.com/vosk/models/vosk-model-small-cs-0.4-rhasspy.zip)
 
 ## Installation
 
